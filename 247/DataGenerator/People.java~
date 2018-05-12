@@ -1,0 +1,106 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class People {
+
+    /**
+     *  (1) A private final field of type ArrayList<Person>. 
+     *      ArrayList is in java.util
+     */
+
+    private final ArrayList<Person> db = new ArrayList<Person>();
+    
+    /**
+     *  (2) A constructor that recieves the name of the input file
+     *      reads the file, and places each line of the file in the
+     *      ArrayList<Person>
+     */
+
+    public People(String fileName) throws FileNotFoundException{
+	// Open the input file
+	final Scanner in = new Scanner(new File(fileName));
+	
+	// The constructor will loop while in.hasNextLine() returns true
+	while(in.hasNextLine()) {
+	    db.add(new Person(in.nextLine())); //  A person is added to the ArrayList<Person> 
+	}
+	in.close();  // Closes the input file
+    }
+
+    /**
+     *  (3) A public function get() which recieves a Person ID as an int,
+     *      searches the ArrayList for the matching Person, and returns the
+     *      matching Person. If no match if found, return null.
+     */
+
+    public Person getPerson(int pID) {
+	Person description = null;
+	int id = 0;
+
+	for(Person line : db) { 
+	    id = line.id();
+	    if(pID == id) {
+		description = line; 
+	    }
+	}
+	return description;
+    }
+
+     /**
+      *  (4) A toString() method that overrides toString() in Object. This must
+      *	     be tagged @Override. This method takes no arguments, and returns a
+      *	     String. The returned String will be all the Person objects 
+      *	     concatenated, one per line (separated by newline characters).
+      */
+    
+    @Override
+    public String toString() {
+	Person p = null;
+	return
+	    // Persons obects are already concatenated together 
+	    // in the toString method of Person class
+	    p.toString();
+    } // toString()
+
+    
+    private static Scanner in = null;
+    
+    private static String promptForInput(final String prompt) {
+        System.out.print(prompt);
+        if (in == null)
+            in = new Scanner(System.in);
+	
+        final String result = in.nextLine();
+        if (result.equals("q"))
+            return null;
+        else return result;
+    } // promptForInput()
+
+    /**
+     *  (5) A main() function that creates a new People instance, passing it
+     *      "db.txt" as an argument. main() then prompts the user for an ID number,
+     *      reads the ID number, and displays the matching Person. If no matching
+     *      Person is found, display a message indicating that the ID is unknown.
+     */
+    
+    public static void main(String[] args) {
+	try {
+	    People p = new People("db.txt");
+	    String input = p.promptForInput("Desired ID: ");
+	    int pID = Integer.parseInt(input, 16);
+	    Person matchingPerson = p.getPerson(pID);
+	    
+	    if(matchingPerson == null) {
+		System.out.println("ID '" + input + "' not found."); 
+	    }
+	    else {
+		System.out.println(matchingPerson);
+	    }
+	} catch(FileNotFoundException e) {
+	    System.err.println("FileNotFoundException");
+	}
+    }
+}

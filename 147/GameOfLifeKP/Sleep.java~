@@ -1,0 +1,18 @@
+public class Sleep
+{
+    public void sleeper() {
+	//default sleep for one second
+	long sleepTime = 100000;
+
+	//start sleeper() 
+	System.out.println("Sleeping until next generation...");
+	try
+	    {
+		Thread.sleep(sleepTime);
+	    }
+	catch(Exception ex)
+	    {
+		System.out.println("Exception:"+ex.getStackTrace());
+	    }
+    } 
+}
